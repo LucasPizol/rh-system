@@ -9,8 +9,8 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
-  url      = "file:./dev.db"
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 model Company {
@@ -55,6 +55,13 @@ model Employee {
   departmentId String
   company      Company    @relation(fields: [companyId], references: [id])
   companyId    String
+
+  isDisabled Boolean   @default(false)
+  disabledAt DateTime?
+
+  isFired     Boolean   @default(false)
+  firedAt     DateTime?
+  firedReason String?
 }
 
 model Department {

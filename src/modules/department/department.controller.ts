@@ -1,4 +1,13 @@
-import { Body, Controller, Get, Post, Request } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+  Request,
+} from '@nestjs/common';
 import { HttpRequest } from 'src/security/auth-guard';
 import { DepartmentService } from './department.service';
 import { CreateDepartmentRequestDTO } from './dto/create-department-request.dto';
@@ -25,5 +34,29 @@ export class DepartmentController {
     const user = req.user;
 
     return await this.departmentService.loadAll(user.companyId);
+  }
+
+  @Put('/:id')
+  async update(
+    @Request() req: HttpRequest,
+    @Body() department: CreateDepartmentRequestDTO,
+    @Param('id') id: string,
+  ) {
+    const user = req.user;
+
+    return await this.departmentService.update(
+      { id, companyId: user.companyId },
+      department,
+    );
+  }
+
+  @Delete('/:id')
+  async delete(@Request() req: HttpRequest, @Param('id') id: string) {
+    const user = req.user;
+
+    return await this.departmentService.delete({
+      companyId: user.companyId,
+      id,
+    });
   }
 }
