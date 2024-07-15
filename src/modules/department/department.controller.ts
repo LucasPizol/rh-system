@@ -1,13 +1,20 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Post, Request } from '@nestjs/common';
 import { DepartmentService } from './department.service';
-import { CreateDepartmentDTO } from './dto/create-department.dto';
+import { CreateDepartmentRequestDTO } from './dto/create-department-request.dto';
 
 @Controller('department')
 export class DepartmentController {
   constructor(private readonly departmentService: DepartmentService) {}
 
   @Post()
-  async create(@Body() department: CreateDepartmentDTO) {
-    return await this.departmentService.create(department);
+  async create(@Request() req, @Body() department: CreateDepartmentRequestDTO) {
+    const user = req.user;
+
+    console.log(user);
+
+    return await this.departmentService.create({
+      ...department,
+      companyId: user.companyId,
+    });
   }
 }

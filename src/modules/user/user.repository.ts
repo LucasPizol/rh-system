@@ -1,3 +1,4 @@
+import { Injectable } from '@nestjs/common';
 import { User } from '@prisma/client';
 import { PrismaService } from 'src/database/prisma.service';
 import { CreateUserDTO } from './dto/create-user.dto';
@@ -7,6 +8,7 @@ export abstract class UserRepositoryBase {
   abstract findByUsername(username: string): Promise<User | null>;
 }
 
+@Injectable()
 export class UserRepository implements UserRepositoryBase {
   constructor(private readonly prisma: PrismaService) {}
 
