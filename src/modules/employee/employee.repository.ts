@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Employee } from '@prisma/client';
 import { PrismaService } from 'src/database/prisma.service';
-import { EmployeeDTO } from './dto/emplyee.dto';
+import { EmployeeDTO } from './dto/employee.dto';
 
 export abstract class EmployeeRepositoryBase {
   abstract createEmployee(

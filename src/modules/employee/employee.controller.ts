@@ -1,6 +1,6 @@
 import { Body, Controller, Post } from '@nestjs/common';
 import { Employee } from '@prisma/client';
-import { EmployeeDTO } from './dto/emplyee.dto';
+import { EmployeeDTO } from './dto/employee.dto';
 import { EmployeeService } from './employee.service';
 
 @Controller('employee')

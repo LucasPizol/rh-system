@@ -13,6 +13,30 @@ datasource db {
   url      = "file:./dev.db"
 }
 
+model Company {
+  id   String @id @default(cuid())
+  name String
+
+  employees   Employee[]
+  users       User[]
+  departments Department[]
+  contracts   Contract[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model User {
+  id       String @id @default(cuid())
+  username String @unique
+  password String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  company   Company  @relation(fields: [companyId], references: [id])
+  companyId String
+}
+
 model Employee {
   id      String @id @default(cuid())
   name    String
@@ -29,6 +53,8 @@ model Employee {
 
   department   Department @relation(fields: [departmentId], references: [id])
   departmentId String
+  company      Company    @relation(fields: [companyId], references: [id])
+  companyId    String
 }
 
 model Department {
@@ -39,6 +65,8 @@ model Department {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  company   Company  @relation(fields: [companyId], references: [id])
+  companyId String
 }
 
 model Contract {
@@ -65,4 +93,6 @@ model Contract {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  company   Company  @relation(fields: [companyId], references: [id])
+  companyId String
 }

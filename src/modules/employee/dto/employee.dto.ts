@@ -15,4 +15,10 @@ export class EmployeeDTO {
 
   @IsNotEmpty({ message: 'Phone is required' })
   phone: string;
+
+  @IsNotEmpty({ message: 'Department is required' })
+  departmentId: string;
+
+  @IsNotEmpty({ message: 'Company is required' })
+  companyId: string;
 }
