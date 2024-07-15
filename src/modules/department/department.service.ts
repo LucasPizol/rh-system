@@ -11,4 +11,8 @@ export class DepartmentService {
   async create(data: CreateDepartmentDTO) {
     return await this.departmentRepository.create(data);
   }
+
+  async loadAll(companyId: string) {
+    return await this.departmentRepository.loadAll(companyId);
+  }
 }
