@@ -1,0 +1,68 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model Employee {
+  id      String @id @default(cuid())
+  name    String
+  email   String
+  phone   String
+  address String
+
+  document         String
+  documentPhotoUrl String
+
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  contract  Contract[]
+
+  department   Department @relation(fields: [departmentId], references: [id])
+  departmentId String
+}
+
+model Department {
+  id   String @id @default(cuid())
+  name String
+
+  employees Employee[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Contract {
+  id         String @id @default(cuid())
+  employeeId String
+
+  startDate        DateTime
+  endDate          DateTime?
+  interrupmentDate DateTime?
+  role             String
+
+  contractUrl String
+
+  type String @default("cpf")
+
+  sallary Float
+  hours   Float
+
+  hoursType   String  @default("monthly")
+  description String?
+
+  employee Employee @relation(fields: [employeeId], references: [id])
+  url      String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
