@@ -24,4 +24,8 @@ export class EmployeeService {
   ): Promise<Employee> {
     return await this.employeeRepository.update(operation, data);
   }
+
+  async disable(operation: Operation): Promise<void> {
+    return await this.employeeRepository.disable(operation);
+  }
 }

@@ -1,4 +1,14 @@
-import { Body, Controller, Get, Post, Put, Request } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpCode,
+  Param,
+  Patch,
+  Post,
+  Put,
+  Request,
+} from '@nestjs/common';
 import { Employee } from '@prisma/client';
 import { HttpRequest } from 'src/security/auth-guard';
 import { CreateEmployeeRequestDTO } from './dto/create-employee-request.dto';
@@ -42,5 +52,21 @@ export class EmployeeController {
       },
       data,
     );
+  }
+
+  @HttpCode(204)
+  @Patch('/:id')
+  async disable(
+    @Request() req: HttpRequest,
+    @Param('id') id: string,
+  ): Promise<Employee> {
+    const user = req.user;
+
+    await this.employeeService.disable({
+      id,
+      companyId: user.companyId,
+    });
+
+    return;
   }
 }

@@ -14,6 +14,7 @@ export abstract class EmployeeRepositoryBase {
     operation: Operation,
     data: Partial<EmployeeDTO>,
   ): Promise<Employee>;
+  abstract disable(operation: Operation): Promise<void>;
 }
 
 @Injectable()
@@ -45,6 +46,13 @@ export class EmployeeRepository implements EmployeeRepositoryBase {
     return await this.prisma.employee.update({
       where: { id: operation.id },
       data,
+    });
+  }
+
+  async disable(operation: Operation): Promise<void> {
+    await this.prisma.employee.update({
+      where: { id: operation.id, companyId: operation.companyId },
+      data: { isDisabled: true, disabledAt: new Date() },
     });
   }
 }
