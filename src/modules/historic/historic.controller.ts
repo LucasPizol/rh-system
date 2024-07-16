@@ -5,12 +5,10 @@ import {
   Get,
   HttpCode,
   Post,
-  Put,
   Request,
 } from '@nestjs/common';
 import { HttpRequest } from 'src/security/auth-guard';
 import { CreateHistoricBodyRequestDTO } from './dto/create-historic-body-request.dto';
-import { UpdateHistoricDTO } from './dto/update-historic-dto';
 import { HistoricService } from './historic.service';
 
 @Controller('historic')
@@ -32,14 +30,6 @@ export class HistoricController {
   @Get()
   async findAll(@Request() req: HttpRequest) {
     return await this.historicService.findAll(req.user.companyId);
-  }
-
-  @Put(':id')
-  async update(@Request() req: HttpRequest, @Body() body: UpdateHistoricDTO) {
-    return await this.historicService.update(
-      { id: req.params.id, companyId: req.user.companyId },
-      body,
-    );
   }
 
   @Delete(':id')
