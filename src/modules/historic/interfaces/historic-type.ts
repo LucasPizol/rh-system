@@ -1,4 +1,4 @@
 export enum HistoricType {
-  INPUT = 'INPUT',
-  OUTPUT = 'OUTPUT',
+  INPUT = 1,
+  OUTPUT = 0,
 }

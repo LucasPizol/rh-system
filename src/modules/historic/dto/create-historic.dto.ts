@@ -1,13 +1,7 @@
 import { IsNotEmpty } from 'class-validator';
-import { HistoricType } from '../interfaces/historic-type';
+import { CreateHistoricRequestDTO } from './create-historic-request.dto';
 
-export class CreateHistoricDTO {
-  @IsNotEmpty({ message: 'productId is required' })
-  productId: string;
-
-  @IsNotEmpty({ message: 'companyId is required' })
-  companyId: string;
-
+export class CreateHistoricDTO extends CreateHistoricRequestDTO {
   @IsNotEmpty({ message: 'sellPrice is required' })
   sellPrice: number;
 
@@ -16,13 +10,4 @@ export class CreateHistoricDTO {
 
   @IsNotEmpty({ message: 'lastQuantity is required' })
   lastQuantity: number;
-
-  @IsNotEmpty({ message: 'userId is required' })
-  userId: string;
-
-  @IsNotEmpty({ message: 'type is required' })
-  type: HistoricType;
-
-  @IsNotEmpty({ message: 'quantity is required' })
-  quantity: number;
 }

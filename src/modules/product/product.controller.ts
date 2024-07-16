@@ -24,10 +24,13 @@ export class ProductController {
     @Body() data: CreateProductRequestDTO,
     @Request() req: HttpRequest,
   ): Promise<Product> {
-    return await this.productService.create({
-      ...data,
-      companyId: req.user.companyId,
-    });
+    return await this.productService.create(
+      {
+        ...data,
+        companyId: req.user.companyId,
+      },
+      req.user.id,
+    );
   }
 
   @Get()

@@ -7,7 +7,7 @@ CREATE TABLE "Historic" (
     "boughtPrice" DOUBLE PRECISION NOT NULL,
     "lastQuantity" DOUBLE PRECISION NOT NULL,
     "userId" TEXT NOT NULL,
-    "type" TEXT NOT NULL,
+    "type" INT NOT NULL,
     "quantity" DOUBLE PRECISION NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,

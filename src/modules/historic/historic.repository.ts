@@ -18,14 +18,17 @@ export class HistoricRepository implements HistoricRepositoryBase {
   constructor(private readonly prisma: PrismaService) {}
 
   async create(data: CreateHistoricDTO): Promise<Historic> {
-    return await this.prisma.historic.create({ data });
+    return await this.prisma.historic.create({ data: data as any });
   }
 
   async update(
     operation: Operation,
     data: UpdateHistoricDTO,
   ): Promise<Historic> {
-    return await this.prisma.historic.update({ where: operation, data });
+    return await this.prisma.historic.update({
+      where: operation,
+      data: data as any,
+    });
   }
 
   async delete(operation: Operation): Promise<void> {

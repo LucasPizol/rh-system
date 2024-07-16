@@ -14,6 +14,10 @@ export abstract class ProductRepositoryBase {
   abstract delete(operation: Operation): Promise<void>;
   abstract findById(operation: Operation): Promise<Product>;
   abstract findAll(companyId: string): Promise<Product[]>;
+  abstract updateStock(
+    operation: Operation,
+    quantity: number,
+  ): Promise<Product>;
 }
 
 @Injectable()
@@ -45,6 +49,13 @@ export class ProductRepository implements ProductRepositoryBase {
   async findAll(companyId: string): Promise<Product[]> {
     return await this.prisma.product.findMany({
       where: { companyId, isDisabled: false },
+    });
+  }
+
+  async updateStock(operation: Operation, quantity: number): Promise<Product> {
+    return await this.prisma.product.update({
+      where: operation,
+      data: { quantity: { increment: quantity } },
     });
   }
 }

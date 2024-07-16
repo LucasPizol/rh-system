@@ -177,7 +177,7 @@ model Historic {
   userId String
   user   User   @relation(fields: [userId], references: [id])
 
-  type String
+  type Int
 
   quantity Float
 
