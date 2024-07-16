@@ -113,7 +113,7 @@ model Product {
 
   description String?
 
-  barcode String @unique
+  barcode String? @unique
 
   minQuantity Float @default(0)
   quantity    Float
@@ -140,6 +140,9 @@ model Product {
   companyId String
   company   Company    @relation(fields: [companyId], references: [id])
   historic  Historic[]
+
+  isDisabled Boolean   @default(false)
+  disabledAt DateTime?
 }
 
 model Historic {
