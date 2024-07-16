@@ -26,6 +26,9 @@ model Company {
   createdAt DateTime   @default(now())
   updatedAt DateTime   @updatedAt
   historic  Historic[]
+  order     Order[]
+
+  @@map("company")
 }
 
 model User {
@@ -38,6 +41,9 @@ model User {
   company   Company    @relation(fields: [companyId], references: [id])
   companyId String
   historic  Historic[]
+  order     Order[]
+
+  @@map("user")
 }
 
 model Employee {
@@ -65,6 +71,8 @@ model Employee {
   isFired     Boolean   @default(false)
   firedAt     DateTime?
   firedReason String?
+
+  @@map("employee")
 }
 
 model Department {
@@ -77,6 +85,8 @@ model Department {
   updatedAt DateTime @updatedAt
   company   Company  @relation(fields: [companyId], references: [id])
   companyId String
+
+  @@map("department")
 }
 
 model Contract {
@@ -105,6 +115,8 @@ model Contract {
   updatedAt DateTime @updatedAt
   company   Company  @relation(fields: [companyId], references: [id])
   companyId String
+
+  @@map("contract")
 }
 
 model Product {
@@ -143,6 +155,9 @@ model Product {
 
   isDisabled Boolean   @default(false)
   disabledAt DateTime?
+  order      Order[]
+
+  @@map("product")
 }
 
 model Historic {
@@ -168,4 +183,70 @@ model Historic {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@map("historic")
+}
+
+model Order {
+  id String @id @default(cuid())
+
+  productId String
+  product   Product @relation(fields: [productId], references: [id])
+
+  companyId String
+  company   Company @relation(fields: [companyId], references: [id])
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
+  quantity Float
+  value    Float
+
+  productSellPrice   Float
+  productBoughtPrice Float
+
+  isInvoice     Boolean   @default(false)
+  invoicedAt    DateTime?
+  invoiceNumber String?
+  invoiceUrl    String?
+
+  paymentMethodId String
+  paymentMethod   PaymentMethod @relation(fields: [paymentMethodId], references: [id])
+
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  installments Installments[]
+
+  @@map("order")
+}
+
+model PaymentMethod {
+  id             String @id @default(cuid())
+  name           String
+  expirationDays Int[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  order     Order[]
+
+  @@map("payment_method")
+}
+
+model Installments {
+  id String @id @default(cuid())
+
+  orderId String
+  order   Order  @relation(fields: [orderId], references: [id])
+
+  expiresIn DateTime
+
+  isPaid Boolean   @default(false)
+  paidAt DateTime?
+
+  value Float
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("installments")
 }
