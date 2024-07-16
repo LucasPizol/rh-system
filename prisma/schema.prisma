@@ -23,8 +23,9 @@ model Company {
   contracts   Contract[]
   product     Product[]
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  historic  Historic[]
 }
 
 model User {
@@ -32,10 +33,11 @@ model User {
   username String @unique
   password String
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  company   Company  @relation(fields: [companyId], references: [id])
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  company   Company    @relation(fields: [companyId], references: [id])
   companyId String
+  historic  Historic[]
 }
 
 model Employee {
@@ -113,8 +115,8 @@ model Product {
 
   barcode String @unique
 
-  quantity    Float
   minQuantity Float @default(0)
+  quantity    Float
 
   boughtPrice Float @default(0)
   sellPrice   Float @default(0)
@@ -136,5 +138,31 @@ model Product {
   updatedAt DateTime @updatedAt
 
   companyId String
+  company   Company    @relation(fields: [companyId], references: [id])
+  historic  Historic[]
+}
+
+model Historic {
+  id String @id @default(cuid())
+
+  productId String
+  product   Product @relation(fields: [productId], references: [id])
+
+  companyId String
   company   Company @relation(fields: [companyId], references: [id])
+
+  sellPrice   Float
+  boughtPrice Float
+
+  lastQuantity Float
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
+  type String
+
+  quantity Float
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
