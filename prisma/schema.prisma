@@ -21,6 +21,7 @@ model Company {
   users       User[]
   departments Department[]
   contracts   Contract[]
+  product     Product[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -102,4 +103,38 @@ model Contract {
   updatedAt DateTime @updatedAt
   company   Company  @relation(fields: [companyId], references: [id])
   companyId String
+}
+
+model Product {
+  id   String @id @default(cuid())
+  name String
+
+  description String?
+
+  barcode String @unique
+
+  quantity    Float
+  minQuantity Float @default(0)
+
+  boughtPrice Float @default(0)
+  sellPrice   Float @default(0)
+
+  weight Float @default(0)
+
+  batchNumber String?
+
+  unit String
+
+  category String
+
+  isOwner Boolean @default(false)
+
+  location       String?
+  validationDate DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  companyId String
+  company   Company @relation(fields: [companyId], references: [id])
 }
