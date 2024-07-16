@@ -67,7 +67,7 @@ export class HistoricService {
   }
 
   async findAll(companyId: string): Promise<Product[]> {
-    return [];
+    return await this.historicRepository.findAll(companyId);
   }
 
   private async updateProductQuantity(
