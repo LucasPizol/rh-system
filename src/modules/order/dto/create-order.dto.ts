@@ -1,10 +1,15 @@
 import { IsNotEmpty } from 'class-validator';
-import { CreateOrderServiceDTO } from './create-order-service.dto';
+import { CreateOrderRequestDTO } from './create-order-request.dto';
 
-export class CreateOrderDTO extends CreateOrderServiceDTO {
-  @IsNotEmpty({ message: 'productSellPrice is required' })
-  productSellPrice: number;
+export class CreateOrderDTO extends CreateOrderRequestDTO {
+  @IsNotEmpty({ message: 'isInvoice is required' })
+  isInvoice: boolean;
 
-  @IsNotEmpty({ message: 'productBoughtPrice is required' })
-  productBoughtPrice: number;
+  @IsNotEmpty({ message: 'userId is required' })
+  userId: string;
+
+  @IsNotEmpty({ message: 'companyId is required' })
+  companyId: string;
+
+  invocedAt: Date | null;
 }

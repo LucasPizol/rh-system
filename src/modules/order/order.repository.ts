@@ -21,7 +21,7 @@ export class OrderRepository implements OrderRepositoryBase {
   constructor(private readonly prisma: PrismaService) {}
 
   async createOrder(data: CreateOrderDTO): Promise<Order> {
-    return await this.prisma.order.create({ data });
+    return await this.prisma.order.create({ data: data as any });
   }
 
   async getOrders(companyId: string): Promise<Order[]> {

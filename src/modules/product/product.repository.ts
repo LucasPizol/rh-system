@@ -18,6 +18,7 @@ export abstract class ProductRepositoryBase {
     operation: Operation,
     quantity: number,
   ): Promise<Product>;
+  abstract findManyByIds(ids: string[], companyId: string): Promise<Product[]>;
 }
 
 @Injectable()
@@ -56,6 +57,12 @@ export class ProductRepository implements ProductRepositoryBase {
     return await this.prisma.product.update({
       where: operation,
       data: { quantity: { increment: quantity } },
+    });
+  }
+
+  async findManyByIds(ids: string[], companyId: string): Promise<Product[]> {
+    return await this.prisma.product.findMany({
+      where: { id: { in: ids }, companyId },
     });
   }
 }

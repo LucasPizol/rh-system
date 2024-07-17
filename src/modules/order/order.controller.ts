@@ -1,5 +1,6 @@
 import { Body, Controller, Param, Post, Put, Request } from '@nestjs/common';
 import { HttpRequest } from 'src/security/auth-guard';
+import { ProductOrderDTO } from '../product-order/dto/product-order.dto';
 import { CreateOrderRequestDTO } from './dto/create-order-request.dto';
 import { OrderService } from './order.service';
 
@@ -12,11 +13,7 @@ export class OrderController {
     @Request() req: HttpRequest,
     @Body() data: CreateOrderRequestDTO,
   ) {
-    return await this.orderService.createOrder({
-      ...data,
-      companyId: req.user.companyId,
-      userId: req.user.id,
-    });
+    return await this.orderService.createOrder(data, req.user);
   }
 
   @Put('invoice/:id')
@@ -25,5 +22,13 @@ export class OrderController {
       companyId: req.user.companyId,
       id,
     });
+  }
+
+  @Post('product')
+  async addProduct(@Request() req: HttpRequest, @Body() data: ProductOrderDTO) {
+    return await this.orderService.addProductOrderToOrder(
+      { companyId: req.user.companyId, id: data.orderId },
+      data,
+    );
   }
 }

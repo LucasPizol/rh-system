@@ -22,11 +22,11 @@ model Company {
   departments Department[]
   contracts   Contract[]
   product     Product[]
+  order       Order[]
 
   createdAt DateTime   @default(now())
   updatedAt DateTime   @updatedAt
-  historic  Historic[]
-  order     Order[]
+  customer  Customer[]
 
   @@map("company")
 }
@@ -36,11 +36,10 @@ model User {
   username String @unique
   password String
 
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @updatedAt
-  company   Company    @relation(fields: [companyId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  company   Company  @relation(fields: [companyId], references: [id])
   companyId String
-  historic  Historic[]
   order     Order[]
 
   @@map("user")
@@ -150,41 +149,57 @@ model Product {
   updatedAt DateTime @updatedAt
 
   companyId String
-  company   Company    @relation(fields: [companyId], references: [id])
-  historic  Historic[]
+  company   Company @relation(fields: [companyId], references: [id])
 
-  isDisabled Boolean   @default(false)
-  disabledAt DateTime?
-  order      Order[]
+  isDisabled   Boolean        @default(false)
+  disabledAt   DateTime?
+  order        Order[]
+  productOrder ProductOrder[]
 
   @@map("product")
 }
 
-model Historic {
+model ProductOrder {
   id String @id @default(cuid())
 
   productId String
   product   Product @relation(fields: [productId], references: [id])
 
-  companyId String
-  company   Company @relation(fields: [companyId], references: [id])
-
-  sellPrice   Float
-  boughtPrice Float
-
-  lastQuantity Float
-
-  userId String
-  user   User   @relation(fields: [userId], references: [id])
-
-  type Int
+  orderId String
+  order   Order  @relation(fields: [orderId], references: [id])
 
   quantity Float
+  value    Float
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@map("historic")
+  @@map("product_order")
+}
+
+model Customer {
+  id   String @id @default(cuid())
+  name String
+  cnpj String
+  cpf  String
+
+  addressId String
+
+  companyId String
+  company   Company @relation(fields: [companyId], references: [id])
+
+  email String
+  phone String
+
+  code        Int     @unique @default(autoincrement())
+  description String?
+  contractUrl String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  order     Order[]
+
+  @@map("customer")
 }
 
 model Order {
@@ -196,14 +211,16 @@ model Order {
   companyId String
   company   Company @relation(fields: [companyId], references: [id])
 
+  customerId String?
+  customer   Customer? @relation(fields: [customerId], references: [id])
+
   userId String
   user   User   @relation(fields: [userId], references: [id])
 
   quantity Float
   value    Float
 
-  productSellPrice   Float
-  productBoughtPrice Float
+  type Int
 
   isInvoice     Boolean   @default(false)
   invoicedAt    DateTime?
@@ -216,6 +233,7 @@ model Order {
   createdAt    DateTime       @default(now())
   updatedAt    DateTime       @updatedAt
   installments Installments[]
+  productOrder ProductOrder[]
 
   @@map("order")
 }

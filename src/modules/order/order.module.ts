@@ -1,10 +1,11 @@
 import { Module } from '@nestjs/common';
 import { PrismaService } from 'src/database/prisma.service';
+
 import {
-  HistoricRepository,
-  HistoricRepositoryBase,
-} from '../historic/historic.repository';
-import { HistoricService } from '../historic/historic.service';
+  CustomerRepository,
+  CustomerRepositoryBase,
+} from '../customer/customer.repository';
+import { CustomerService } from '../customer/customer.service';
 import {
   InstallmentRepository,
   InstallmentRepositoryBase,
@@ -16,6 +17,11 @@ import {
   PaymentMethodRepositoryBase,
 } from '../payment-method/payment-method.repository';
 import { PaymentMethodService } from '../payment-method/payment-method.service';
+import {
+  ProductOrderRepository,
+  ProductOrderRepositoryBase,
+} from '../product-order/product-order.repository';
+import { ProductOrderService } from '../product-order/product-order.service';
 import {
   ProductRepository,
   ProductRepositoryBase,
@@ -32,6 +38,11 @@ import { OrderService } from './order.service';
     OrderService,
     PrismaService,
     ProductService,
+    PaymentMethodService,
+    InstallmentService,
+    InvoiceService,
+    CustomerService,
+    ProductOrderService,
     {
       provide: ProductRepositoryBase,
       useClass: ProductRepository,
@@ -49,13 +60,13 @@ import { OrderService } from './order.service';
       useClass: PaymentMethodRepository,
     },
     {
-      provide: HistoricRepositoryBase,
-      useClass: HistoricRepository,
+      provide: CustomerRepositoryBase,
+      useClass: CustomerRepository,
     },
-    PaymentMethodService,
-    InstallmentService,
-    InvoiceService,
-    HistoricService,
+    {
+      provide: ProductOrderRepositoryBase,
+      useClass: ProductOrderRepository,
+    },
   ],
 })
 export class OrderModule {}
